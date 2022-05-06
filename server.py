@@ -32,7 +32,7 @@ def showSummary():
     club = [club for club in clubs if club['email'] == email]
     if email:
         if club:
-            return render_template('welcome.html', club=club, competitions=competitions)
+            return render_template('welcome.html', club=club[0], competitions=competitions)
         else:
             flash("Adresse email non autorisée ! Merci de contacter l'admin de site")
             return redirect(url_for('index'))
@@ -57,8 +57,11 @@ def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
-    flash('Great-booking complete!')
+    if placesRequired <= int(club['points']):
+        competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
+        flash('Great-booking complete !')
+    else:
+        flash('booking incomplete ! Not enough point in your wallet !')
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
