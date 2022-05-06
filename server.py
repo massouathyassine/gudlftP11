@@ -1,5 +1,6 @@
 import json
 from flask import Flask, render_template, request, redirect, flash, url_for
+import datetime
 
 
 def loadClubs():
@@ -11,6 +12,10 @@ def loadClubs():
 def loadCompetitions():
     with open('competitions.json') as comps:
         listOfCompetitions = json.load(comps)['competitions']
+
+        for comp in listOfCompetitions:
+            if datetime.datetime.fromisoformat(comp['date']) < datetime.datetime.now():
+                comp['closed'] = True
         return listOfCompetitions
 
 
@@ -57,11 +62,18 @@ def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
-    if placesRequired <= int(club['points']):
-        competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
-        flash('Great-booking complete !')
+    if placesRequired <= 12 and int(competition['numberOfPlaces']) > 0:
+        if placesRequired <= int(club['points']):
+            competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
+            if competition['numberOfPlaces'] >= 0:
+                flash('Great-booking complete ! You have reserved {} places.'.format(placesRequired))
+        else:
+            flash('Booking incomplete ! Not enough point in your wallet')
     else:
-        flash('booking incomplete ! Not enough point in your wallet !')
+        if competition['numberOfPlaces'] > 0:
+            flash('Booking incomplete ! 12 places maximum!')
+        else:
+            flash('Booking incomplete ! We are sorry, the competition is full !')
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
