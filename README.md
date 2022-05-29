@@ -32,6 +32,9 @@
     - Rather than hunting around for the packages you need, you can install in one step. Type <code>pip install -r requirements.txt</code>. This will install all the packages listed in the respective file. If you install a package, make sure others know by updating the requirements.txt file. An easy way to do this is <code>pip freeze > requirements.txt</code>
 
     - Flask requires that you set an environmental variable to the python file. However you do that, you'll want to set the file to be <code>server.py</code>. Check [here](https://flask.palletsprojects.com/en/1.1.x/quickstart/#a-minimal-application) for more details
+   
+         For Windows in the directory :
+         
 
         For windows : <code>set FLASK_APP="server.py"</code>
         For mac os : <code>export FLASK_APP="server.py"</code>
