@@ -51,4 +51,16 @@
 
     We also like to show how well we're testing, so there's a module called 
     [coverage](https://coverage.readthedocs.io/en/coverage-5.1/) you should add to your project.
+    
+    We performed the tests with Pytest, Coverage and Locust.
+        Command line as follows (MAC OS ) :
+
+     - <code>export COVERAGE_RCFILE=%PYTHONPATH%\tests\.coveragerc</code> in order to load the coverage configuration
+     - <code>coverage run -m pytest</code>
+     - <code>coverage html or coverage report</code>
+
+    For testing load with locust (MAC OS) : 
+    
+     - <code>export LOCUST_LOCUSTFILE=%PYTHONPATH%\tests\locustfile.py</code>
+     - <code>locust</code>
 
